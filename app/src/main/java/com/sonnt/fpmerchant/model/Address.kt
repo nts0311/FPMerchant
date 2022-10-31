@@ -1,5 +1,9 @@
 package com.sonnt.fpmerchant.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 class Address(
 var id: Long = 0,
 
@@ -9,7 +13,7 @@ var city: String? = null,
 var detail: String? = null,
 var lat: Double? = null,
 var lng: Double? = null
-) {
+) : Parcelable {
     override fun toString(): String {
         var result = ""
 

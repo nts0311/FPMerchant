@@ -38,9 +38,9 @@ open class BaseRecyclerViewAdapter<T: Any, BD: ViewDataBinding>(
         fun bind(item: T) {
             this.item = item
 
-//            binding.setVariable(BR.item, item)
-//            binding.setVariable(BR.index, adapterPosition)
-//            binding.setVariable(BR.clickListener, this::onClickItem)
+            binding.setVariable(BR.item, item)
+            binding.setVariable(BR.index, adapterPosition)
+            binding.setVariable(BR.clickListener, this::onClickItem)
         }
 
         fun onClickItem() {

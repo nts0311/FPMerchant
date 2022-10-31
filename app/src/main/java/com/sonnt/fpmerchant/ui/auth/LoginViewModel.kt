@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 
 class LoginViewModel: BaseViewModel() {
 
-    var username: String = "driver"
+    var username: String = "merchant"
     var password: String = "123456"
 
     var isLoginButtonEnabled = MutableLiveData(true)

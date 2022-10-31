@@ -13,6 +13,8 @@ import com.sonnt.fpmerchant.MainActivity
 import com.sonnt.fpmerchant.R
 import com.sonnt.fpmerchant.databinding.ActivityLoginBinding
 import com.sonnt.fpmerchant.ui.auth.LoginViewModel
+import com.sonnt.fpmerchant.utils.EventCode
+import com.sonnt.fpmerchant.utils.EventHub
 
 class LoginActivity : AppCompatActivity() {
 
@@ -38,6 +40,8 @@ class LoginActivity : AppCompatActivity() {
         viewModel.isLoginSuccess.observe(this) {isLoggedIn ->
             if (!isLoggedIn)
                 return@observe
+
+            EventHub.post(EventCode.loggedIn.rawValue)
 
             val intent = Intent(this@LoginActivity, MainActivity::class.java)
             startActivity(intent)
