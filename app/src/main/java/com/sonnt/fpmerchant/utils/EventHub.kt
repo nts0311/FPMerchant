@@ -1,3 +1,4 @@
+/*
 package com.sonnt.fpmerchant.utils
 
 import android.util.Log
@@ -43,4 +44,4 @@ object EventHub {
 
         return eventFlow
     }
-}
+}*/

@@ -31,6 +31,13 @@
             android:name=".ui.auth.LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.FPMerchant.NoActionBar">
+
+        </activity>
+
+        <activity
+            android:name=".ui.splash.SplashActivity"
+            android:exported="true"
+            android:theme="@style/Theme.FPMerchant.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

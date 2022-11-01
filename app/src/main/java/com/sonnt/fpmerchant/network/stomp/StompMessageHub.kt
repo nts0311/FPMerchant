@@ -3,15 +3,16 @@ package com.sonnt.fpmerchant.network.stomp
 import android.annotation.SuppressLint
 import com.sonnt.fpmerchant.data.local.AuthDataSource
 import com.sonnt.fpmerchant.di.AppModule
+import com.sonnt.fpmerchant.message.LoggedInEvent
+import com.sonnt.fpmerchant.message.WSConnectedEvent
 import com.sonnt.fpmerchant.network.Endpoint
-import com.sonnt.fpmerchant.utils.EventCode
-import com.sonnt.fpmerchant.utils.EventHub
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.reactive.asFlow
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 import ua.naiksoftware.stomp.Stomp
-import ua.naiksoftware.stomp.StompClient
 import ua.naiksoftware.stomp.dto.LifecycleEvent
 import ua.naiksoftware.stomp.dto.StompCommand
 import ua.naiksoftware.stomp.dto.StompHeader
@@ -24,12 +25,15 @@ class StompMessageHub {
     private val subscriberFlows = mutableMapOf<String, SharedFlow<*>>()
 
     init {
-        EventHub.subscribe(EventCode.loggedIn.rawValue, coroutineScope) {
-            if (!stompClient.isConnected) {
-                reconnect()
-            } else {
-                connectWS()
-            }
+        EventBus.getDefault().register(this)
+    }
+
+    @Subscribe
+    fun onLoggedIn(event: LoggedInEvent) {
+        if (event.isSessionExpired) {
+            reconnect()
+        } else {
+            connectWS()
         }
     }
 
@@ -39,7 +43,7 @@ class StompMessageHub {
                 .filter { it.type == LifecycleEvent.Type.OPENED }
                 .take(1)
                 .onEach {
-                    EventHub.post(EventCode.connectedWS.rawValue)
+                    EventBus.getDefault().post(WSConnectedEvent())
                 }
                 .launchIn(coroutineScope)
             stompClient.connect(getConnectionHeaders())
@@ -87,10 +91,10 @@ class StompMessageHub {
 
     @SuppressLint("CheckResult")
     fun reconnect() {
-        stompClient.disconnectCompletable()
-            .subscribe {
-                connectWS()
-            }
+//        stompClient.disconnectCompletable()
+//            .subscribe {
+//                connectWS()
+//            }
     }
 
 }

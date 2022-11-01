@@ -21,11 +21,18 @@ class OrderRepository private constructor() {
     var activeOrders = mutableListOf<OrderInfo>()
     var doneOrder = mutableListOf<OrderInfo>()
 
-    val newOrderRequestFlow: Flow<OrderInfo>? =
-        stompMessageHub.subscribeTo(Endpoint.newOrderRequest, OrderInfo::class.java)
-            ?.onEach {
-                activeOrders.add(it)
-            }
+    private var newOrderRequestFlow: Flow<OrderInfo>? = null
+
+    fun getNewOrderRequestFlow(): Flow<OrderInfo> {
+        if (newOrderRequestFlow == null) {
+            newOrderRequestFlow = stompMessageHub.subscribeTo(Endpoint.newOrderRequest, OrderInfo::class.java)
+                ?.onEach {
+                    activeOrders.add(it)
+                }
+        }
+
+        return newOrderRequestFlow!!
+    }
 
     suspend fun getActiveOrders(): List<OrderInfo>? {
         val response = callApi { orderService.getActiveOrders() }

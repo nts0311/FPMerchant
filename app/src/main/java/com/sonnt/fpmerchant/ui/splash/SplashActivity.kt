@@ -1,4 +1,4 @@
-package com.sonnt.fpdriver.features.splash
+package com.sonnt.fpmerchant.ui.splash
 
 import android.Manifest
 import android.content.Intent
@@ -20,17 +20,16 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        checkPermissions()
+        toLoginScreen()
+        //checkPermissions()
     }
 
     private fun toLoginScreen() {
-
 
         val intent = Intent(this, LoginActivity::class.java)
         intent.extras?.putBoolean("from_splash", true)
         intent.putExtra("from_splash", true)
         startActivity(intent)
-
 
         finish()
     }

@@ -93,4 +93,6 @@ dependencies {
     //Cloudinary
     implementation 'com.cloudinary:cloudinary-android-core:2.2.0'
 
+    implementation 'org.greenrobot:eventbus:3.3.1'
+
 }

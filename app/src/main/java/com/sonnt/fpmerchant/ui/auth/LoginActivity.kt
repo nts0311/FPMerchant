@@ -12,9 +12,8 @@ import androidx.databinding.DataBindingUtil
 import com.sonnt.fpmerchant.MainActivity
 import com.sonnt.fpmerchant.R
 import com.sonnt.fpmerchant.databinding.ActivityLoginBinding
-import com.sonnt.fpmerchant.ui.auth.LoginViewModel
-import com.sonnt.fpmerchant.utils.EventCode
-import com.sonnt.fpmerchant.utils.EventHub
+import com.sonnt.fpmerchant.message.LoggedInEvent
+import org.greenrobot.eventbus.EventBus
 
 class LoginActivity : AppCompatActivity() {
 
@@ -41,10 +40,15 @@ class LoginActivity : AppCompatActivity() {
             if (!isLoggedIn)
                 return@observe
 
-            EventHub.post(EventCode.loggedIn.rawValue)
+            var isSessionExpired = true
 
-            val intent = Intent(this@LoginActivity, MainActivity::class.java)
-            startActivity(intent)
+            if (isFromSplash) {
+                isSessionExpired = false
+                val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                startActivity(intent)
+            }
+
+            EventBus.getDefault().post(LoggedInEvent(isSessionExpired))
 
             finish()
         }

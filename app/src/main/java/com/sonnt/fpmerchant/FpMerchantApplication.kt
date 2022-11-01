@@ -5,9 +5,12 @@ import android.app.Application
 import android.content.Intent
 import android.os.Bundle
 import com.sonnt.fpmerchant.di.AppModule
+import com.sonnt.fpmerchant.message.SessionExpiredEvent
 import com.sonnt.fpmerchant.ui.auth.LoginActivity
-import com.sonnt.fpmerchant.utils.EventCode
-import com.sonnt.fpmerchant.utils.EventHub
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
+
 
 class FpMerchantApplication: Application() {
 
@@ -17,7 +20,7 @@ class FpMerchantApplication: Application() {
         super.onCreate()
         instance = this
         setActivitiesListener()
-        subscribeForAppEvents()
+        EventBus.getDefault().register(this)
     }
 
     fun setActivitiesListener() {
@@ -52,10 +55,9 @@ class FpMerchantApplication: Application() {
         AppModule.provideStompMessageHub().reconnect()
     }
 
-    fun subscribeForAppEvents() {
-        EventHub.subscribe(EventCode.sessionExpired.rawValue, AppModule.provideAppCoroutineScope()) {
-            showLoginScreen()
-        }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: SessionExpiredEvent) {
+        showLoginScreen()
     }
 
     companion object {
