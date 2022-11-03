@@ -8,6 +8,7 @@ import com.sonnt.fpmerchant.message.WSConnectedEvent
 import com.sonnt.fpmerchant.network.Endpoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.reactive.asFlow
 import org.greenrobot.eventbus.EventBus
@@ -42,7 +43,9 @@ class StompMessageHub {
             stompClient.lifecycle().asFlow()
                 .filter { it.type == LifecycleEvent.Type.OPENED }
                 .take(1)
+                .onStart {  }
                 .onEach {
+                    delay(1000)
                     EventBus.getDefault().post(WSConnectedEvent())
                 }
                 .launchIn(coroutineScope)

@@ -21,7 +21,7 @@ data class OrderedProductItem(
 
 @Parcelize
 class OrderEstimatedRouteInfo(
-    var id: Long = 0,
+    var id: Long? ,
     val durationInSec: Long? = null,
     val distanceInMeter: Long? = null,
     val distanceReadable: String? = null
@@ -37,6 +37,8 @@ data class OrderPaymentInfo(
     fun calculatePrice() : Double {
         return price + deliveryFee + serviceFee + discount
     }
+
+    fun getProductPrice() = price.formatCurrency()
 }
 
 @Parcelize
@@ -62,7 +64,7 @@ data class OrderInfo(
     val orderId: Long,
     val orderStatus: String,
     val createdDate: String,
-    val driverAcceptTime: String,
+    val driverAcceptTime: String?,
     val fromAddress: Address,
     val toAddress: Address,
     val routeInfo: OrderEstimatedRouteInfo,
@@ -88,11 +90,13 @@ data class OrderInfo(
     }
 
     fun getDriverAcceptTimeStr(): String {
+        if(driverAcceptTime == null) return ""
         val ldt = LocalDateTime.parse(driverAcceptTime)
         return ldt.format(DateTimeFormatter.ofPattern("dd/MM, HH:mm"))
     }
 
     fun getEstimatedDriverArrivalTime(): String {
+        if(driverAcceptTime == null) return ""
         val ldt = LocalDateTime.parse(driverAcceptTime)
         val estimatedArrivalTime = ldt.plusMinutes(20)
         return estimatedArrivalTime.format(DateTimeFormatter.ofPattern("HH:mm"))

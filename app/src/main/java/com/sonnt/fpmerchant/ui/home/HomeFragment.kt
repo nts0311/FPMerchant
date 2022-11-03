@@ -23,6 +23,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private fun setupView() {
         pagerAdapter = OrderListPagerAdapter(this)
+        binding.viewPager.offscreenPageLimit = 2
         binding.viewPager.adapter = pagerAdapter
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             tab.text = when(position) {

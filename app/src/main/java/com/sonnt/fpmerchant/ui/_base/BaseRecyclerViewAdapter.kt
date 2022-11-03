@@ -1,17 +1,22 @@
 package com.sonnt.fpmerchant.ui._base
 
+import android.R
 import android.view.LayoutInflater
+import android.view.MenuInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
+import androidx.appcompat.widget.PopupMenu
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-
 import androidx.recyclerview.widget.RecyclerView
 import com.sonnt.fpmerchant.BR
 
+
 open class BaseRecyclerViewAdapter<T: Any, BD: ViewDataBinding>(
     @LayoutRes val itemLayout: Int,
-    var onItemClicked: (Int, T) -> Unit = { _, _ -> }
+    var onItemClicked: (Int, T) -> Unit = { _, _ -> },
+    var onItemLongClick: (View, Int, T) -> Unit = {_, _, _ -> }
 ) : RecyclerView.Adapter<BaseRecyclerViewAdapter<T, BD>.BaseViewHolder<BD>>() {
 
     var items: List<T> = listOf()
@@ -41,6 +46,11 @@ open class BaseRecyclerViewAdapter<T: Any, BD: ViewDataBinding>(
             binding.setVariable(BR.item, item)
             binding.setVariable(BR.index, adapterPosition)
             binding.setVariable(BR.clickListener, this::onClickItem)
+
+            binding.root.setOnLongClickListener {
+                onItemLongClick(binding.root, adapterPosition, item)
+                return@setOnLongClickListener true
+            }
         }
 
         fun onClickItem() {

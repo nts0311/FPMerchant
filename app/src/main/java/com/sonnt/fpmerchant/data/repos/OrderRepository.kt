@@ -7,21 +7,24 @@ import com.sonnt.fpmerchant.network.ApiResult
 import com.sonnt.fpmerchant.network.Endpoint
 import com.sonnt.fpmerchant.network.NetworkModule
 import com.sonnt.fpmerchant.network.callApi
+import com.sonnt.fpmerchant.network.stomp.WSMessage
+import com.sonnt.fpmerchant.network.stomp.WSMessageCode
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import java.util.*
 
 class OrderRepository private constructor() {
     private val stompMessageHub = AppModule.provideStompMessageHub()
     private val orderService = NetworkModule.orderService
+    private val coroutineScope = CoroutineScope(Dispatchers.Default)
 
-
-    var activeOrders = mutableListOf<OrderInfo>()
-    var doneOrder = mutableListOf<OrderInfo>()
+    var activeOrders: MutableList<OrderInfo> = Collections.synchronizedList(mutableListOf<OrderInfo>())
+    var doneOrder: MutableList<OrderInfo> = Collections.synchronizedList(mutableListOf<OrderInfo>())
 
     private var newOrderRequestFlow: Flow<OrderInfo>? = null
+    private var orderCompletedFlow: Flow<OrderInfo>? = null
 
     fun getNewOrderRequestFlow(): Flow<OrderInfo> {
         if (newOrderRequestFlow == null) {
@@ -32,6 +35,24 @@ class OrderRepository private constructor() {
         }
 
         return newOrderRequestFlow!!
+    }
+
+    fun getOrderCompletedFlow(): Flow<OrderInfo> {
+        if (orderCompletedFlow == null) {
+            orderCompletedFlow = stompMessageHub.subscribeTo(Endpoint.orderStatus, WSMessage::class.java)
+                ?.filter { it.code == WSMessageCode.ORDER_COMPLETED.code }
+                ?.map {mess ->
+                    val orderId = mess.body.toLong()
+                    return@map activeOrders.first { it.orderId == orderId }
+                }
+                ?.onEach {order ->
+                    doneOrder.add(order)
+                    activeOrders.removeAll { it.orderId == order.orderId }
+                }
+                ?.shareIn(coroutineScope, SharingStarted.Eagerly, 0)
+        }
+
+        return orderCompletedFlow!!
     }
 
     suspend fun getActiveOrders(): List<OrderInfo>? {

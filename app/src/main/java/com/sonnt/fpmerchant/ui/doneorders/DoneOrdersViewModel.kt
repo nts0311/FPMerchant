@@ -1,4 +1,4 @@
-package com.sonnt.fpmerchant.ui.activeorders
+package com.sonnt.fpmerchant.ui.doneorders
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -11,43 +11,29 @@ import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 
-class ActiveOrdersViewModel: BaseViewModel() {
+class DoneOrdersViewModel: BaseViewModel() {
 
-    val activeOrders = MutableLiveData<List<OrderInfo>>()
+    val doneOrders = MutableLiveData<List<OrderInfo>>()
 
     init {
         EventBus.getDefault().register(this)
     }
 
     @Subscribe
-    fun onWSConnected(event: WSConnectedEvent) {
-        subscribeForNewOrder()
+    fun onWSConnected(event: WSConnectedEvent?) {
         subscribeForOrderComplete()
     }
 
     fun getActiveOrders() {
         viewModelScope.launch {
             val activeOrderList = OrderRepository.shared.getActiveOrders() ?: return@launch
-            activeOrders.value = activeOrderList
+            doneOrders.value = activeOrderList
         }
-    }
-
-    private fun subscribeForNewOrder() {
-
-//        flowOf(OrderRepository.shared.getNewOrderRequestFlow(), OrderRepository.shared.getOrderCompletedFlow())
-//            .flattenMerge()
-//            .onEach { activeOrders.value = OrderRepository.shared.activeOrders }
-//            .launchIn(viewModelScope)
-
-        OrderRepository.shared.getNewOrderRequestFlow()
-            .onEach {
-            activeOrders.value = OrderRepository.shared.activeOrders
-        }.launchIn(viewModelScope)
     }
 
     private fun subscribeForOrderComplete() {
         OrderRepository.shared.getOrderCompletedFlow().onEach {
-            activeOrders.value = OrderRepository.shared.activeOrders
+            doneOrders.value = OrderRepository.shared.doneOrder
         }.launchIn(viewModelScope)
     }
 

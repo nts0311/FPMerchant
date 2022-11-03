@@ -48,6 +48,7 @@ class FpMerchantApplication: Application() {
 
     fun showLoginScreen() {
         val intent = Intent(instance, LoginActivity::class.java)
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent)
     }
 

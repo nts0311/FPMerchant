@@ -5,6 +5,7 @@ import com.sonnt.fpmerchant.data.local.AuthDataSource
 import com.sonnt.fpmerchant.di.AppModule
 import com.sonnt.fpmerchant.network.service.AuthService
 import com.sonnt.fpmerchant.network.service.OrderService
+import com.sonnt.fpmerchant.network.service.ProductMenuService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -28,4 +29,5 @@ object NetworkModule {
 
     var authService: AuthService = retrofit.create(AuthService::class.java)
     var orderService: OrderService = retrofit.create(OrderService::class.java)
+    var menuService: ProductMenuService = retrofit.create(ProductMenuService::class.java)
 }

@@ -38,4 +38,8 @@
             android:id="@+id/toDetailOrder"
             app:destination="@id/activeOrderDetailFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/productMenuListFragment"
+        android:name="com.sonnt.fpmerchant.ui.menu.ProductMenuListFragment"
+        android:label="ProductMenuListFragment" />
 </navigation>
