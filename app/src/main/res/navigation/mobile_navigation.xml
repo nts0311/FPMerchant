@@ -41,5 +41,21 @@
     <fragment
         android:id="@+id/productMenuListFragment"
         android:name="com.sonnt.fpmerchant.ui.menu.ProductMenuListFragment"
-        android:label="ProductMenuListFragment" />
+        android:label="ProductMenuListFragment" >
+        <action
+            android:id="@+id/action_productMenuListFragment_to_productListFragment"
+            app:destination="@id/productListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/productListFragment"
+        android:name="com.sonnt.fpmerchant.ui.productlist.ProductListFragment"
+        android:label="ProductListFragment" >
+        <argument
+            android:name="menuId"
+            app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/merchantInfoFragment"
+        android:name="com.sonnt.fpmerchant.ui.merchantinfo.MerchantInfoFragment"
+        android:label="MerchantInfoFragment" />
 </navigation>

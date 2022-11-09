@@ -1,34 +1,34 @@
-/*
 package com.sonnt.fpmerchant.ui.productlist
 
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.PopupMenu
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sonnt.fpmerchant.R
 import com.sonnt.fpmerchant.databinding.FragmentProductListBinding
-import com.sonnt.fpmerchant.databinding.FragmentProductMenuListBinding
 import com.sonnt.fpmerchant.databinding.ItemProductBinding
-import com.sonnt.fpmerchant.databinding.ItemProductMenuBinding
 import com.sonnt.fpmerchant.model.Product
 import com.sonnt.fpmerchant.model.ProductMenu
 import com.sonnt.fpmerchant.ui._base.BaseFragment
 import com.sonnt.fpmerchant.ui._base.BaseRecyclerViewAdapter
-import com.sonnt.fpmerchant.ui.menu.ProductMenuListFragment
 
 class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
 
-    override var layoutResId: Int = R.layout.fragment_product_menu_list
+    override var layoutResId: Int = R.layout.fragment_product_list
 
     private val viewModel: ProductListViewModel by viewModels()
     private val adapter =
         BaseRecyclerViewAdapter<Product, ItemProductBinding>(R.layout.item_product)
 
+    private var menuId: Long = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+        arguments?.let {
+            menuId = it.getLong("menuId")
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -36,7 +36,7 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
 
         setupView()
         setupBinding()
-        viewModel.getMenuList()
+        viewModel.getProductByMenu(menuId)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -49,7 +49,7 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
         v: View,
         menuInfo: ContextMenu.ContextMenuInfo?
     ) {
-        requireActivity().menuInflater.inflate(R.menu.main, menu)
+        requireActivity().menuInflater.inflate(R.menu.fragment_product_list, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -62,7 +62,7 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
     }
 
     private fun setupBinding() {
-        viewModel.menus.observe(viewLifecycleOwner) {
+        viewModel.listProduct.observe(viewLifecycleOwner) {
             adapter.items = it
         }
     }
@@ -84,13 +84,13 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
 
     }
 
-    private fun createItemPopupMenu(view: View, productMenu: ProductMenu) {
+    private fun createItemPopupMenu(view: View, product: Product) {
         val popup = PopupMenu(requireContext(), view)
         val inflater: MenuInflater = popup.getMenuInflater()
         inflater.inflate(R.menu.product_menu_item_popup_menu, popup.getMenu())
         popup.setOnMenuItemClickListener {
             if (it.itemId == R.id.item_edit_product_menu) {
-                editMenu(productMenu)
+
             }
 
             return@setOnMenuItemClickListener true
@@ -98,12 +98,8 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
         popup.show()
     }
 
-    private fun editMenu(productMenu: ProductMenu) {
-
-    }
-
     companion object {
         @JvmStatic
-        fun newInstance() = ProductListFragment()
+        fun newInstance(menuId: Long) = ProductListFragment()
     }
-}*/
+}

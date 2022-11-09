@@ -67,6 +67,8 @@
 
         <ImageView
             android:id="@+id/imageView"
+            app:srcUrl="@{item.imageUrl}"
+            app:placeholder="@{@drawable/ic_fastfood_24}"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginStart="16dp"

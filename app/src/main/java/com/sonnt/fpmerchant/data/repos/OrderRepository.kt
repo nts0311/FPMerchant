@@ -69,6 +69,20 @@ class OrderRepository private constructor() {
         }
     }
 
+    suspend fun getDoneOrders(): List<OrderInfo>? {
+        val response = callApi { orderService.getDoneOrders() }
+        return when (response) {
+            is ApiResult.Success -> {
+                val doneOrder = response.data?.doneOrders ?: listOf()
+                this.doneOrder.clear()
+                this.doneOrder.addAll(activeOrders)
+                doneOrder
+            }
+
+            is ApiResult.Failed -> null
+        }
+    }
+
     suspend fun cancelOrder(orderId: Long): Boolean {
         val response = callApi { NetworkModule.orderService.cancelOrder(orderId) }
 

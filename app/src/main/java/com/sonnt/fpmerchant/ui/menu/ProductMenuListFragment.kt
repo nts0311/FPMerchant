@@ -3,7 +3,9 @@ package com.sonnt.fpmerchant.ui.menu
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sonnt.fpmerchant.R
 import com.sonnt.fpmerchant.databinding.FragmentProductMenuListBinding
@@ -39,14 +41,6 @@ class ProductMenuListFragment : BaseFragment<FragmentProductMenuListBinding>() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onCreateContextMenu(
-        menu: ContextMenu,
-        v: View,
-        menuInfo: ContextMenu.ContextMenuInfo?
-    ) {
-        requireActivity().menuInflater.inflate(R.menu.main, menu)
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.item_add_product_menu) {
             addMenu()
@@ -63,11 +57,13 @@ class ProductMenuListFragment : BaseFragment<FragmentProductMenuListBinding>() {
     }
 
     private fun setupView() {
+        setActionBarTitle("Quản lý menu")
         registerForContextMenu(binding.recyclerView)
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        adapter.onItemClicked = {index, orderInfo ->
-
+        adapter.onItemClicked = {index, menu ->
+            val bundle = bundleOf("menuId" to menu.id )
+            findNavController().navigate(R.id.productListFragment, bundle)
         }
 
         adapter.onItemLongClick = {view, pos, item ->
@@ -98,7 +94,7 @@ class ProductMenuListFragment : BaseFragment<FragmentProductMenuListBinding>() {
     }
 
     private fun editMenu(productMenu: ProductMenu) {
-        val dialog = requireActivity().createTextDialog(title = "Thêm mới menu", text = productMenu.name) {
+        val dialog = requireActivity().createTextDialog(title = "Sửa tên menu", text = productMenu.name) {
             productMenu.name = it
             viewModel.editMenu(productMenu)
         }

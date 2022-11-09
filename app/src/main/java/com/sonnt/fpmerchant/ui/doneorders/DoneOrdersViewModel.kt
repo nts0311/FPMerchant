@@ -24,9 +24,9 @@ class DoneOrdersViewModel: BaseViewModel() {
         subscribeForOrderComplete()
     }
 
-    fun getActiveOrders() {
+    fun getDoneOrders() {
         viewModelScope.launch {
-            val activeOrderList = OrderRepository.shared.getActiveOrders() ?: return@launch
+            val activeOrderList = OrderRepository.shared.getDoneOrders() ?: return@launch
             doneOrders.value = activeOrderList
         }
     }

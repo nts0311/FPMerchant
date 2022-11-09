@@ -33,12 +33,6 @@ class ActiveOrdersViewModel: BaseViewModel() {
     }
 
     private fun subscribeForNewOrder() {
-
-//        flowOf(OrderRepository.shared.getNewOrderRequestFlow(), OrderRepository.shared.getOrderCompletedFlow())
-//            .flattenMerge()
-//            .onEach { activeOrders.value = OrderRepository.shared.activeOrders }
-//            .launchIn(viewModelScope)
-
         OrderRepository.shared.getNewOrderRequestFlow()
             .onEach {
             activeOrders.value = OrderRepository.shared.activeOrders

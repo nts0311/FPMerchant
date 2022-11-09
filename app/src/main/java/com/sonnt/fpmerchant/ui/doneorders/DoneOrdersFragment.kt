@@ -22,7 +22,7 @@ class DoneOrdersFragment : BaseFragment<FragmentDoneOrdersBinding>() {
         super.onViewCreated(view, savedInstanceState)
         setupView()
         setupBinding()
-        //viewModel.getActiveOrders()
+        viewModel.getDoneOrders()
     }
 
     private fun setupBinding() {
