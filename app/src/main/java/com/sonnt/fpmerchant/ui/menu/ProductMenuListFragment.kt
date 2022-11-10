@@ -82,7 +82,7 @@ class ProductMenuListFragment : BaseFragment<FragmentProductMenuListBinding>() {
     private fun createItemPopupMenu(view: View, productMenu: ProductMenu) {
         val popup = PopupMenu(requireContext(), view)
         val inflater: MenuInflater = popup.getMenuInflater()
-        inflater.inflate(R.menu.product_menu_item_popup_menu, popup.getMenu())
+        inflater.inflate(R.menu.item_popup_common_menu, popup.getMenu())
         popup.setOnMenuItemClickListener {
             if(it.itemId == R.id.item_edit_product_menu) {
                 editMenu(productMenu)

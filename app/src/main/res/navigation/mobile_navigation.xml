@@ -12,10 +12,15 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.sonnt.fpmerchant.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/productAttributeFragment"
+        android:name="com.sonnt.fpmerchant.ui.productattribute.ProductAttributeFragment"
+        android:label="Thuộc tính sản phẩm"
+        tools:layout="@layout/fragment_product_attribute">
+        <argument
+            android:name="productAttribute"
+            app:argType="com.sonnt.fpmerchant.model.ProductAttribute"
+            app:nullable="true" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_slideshow"
@@ -53,9 +58,24 @@
         <argument
             android:name="menuId"
             app:argType="long" />
+        <action
+            android:id="@+id/action_productListFragment_to_productDetailFragment"
+            app:destination="@id/productDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/merchantInfoFragment"
         android:name="com.sonnt.fpmerchant.ui.merchantinfo.MerchantInfoFragment"
         android:label="MerchantInfoFragment" />
+    <fragment
+        android:id="@+id/productDetailFragment"
+        android:name="com.sonnt.fpmerchant.ui.productdetail.ProductDetailFragment"
+        android:label="ProductDetailFragment" >
+        <action
+            android:id="@+id/action_productDetailFragment_to_productAttributeFragment"
+            app:destination="@id/productAttributeFragment" />
+        <argument
+            android:name="product"
+            app:argType="com.sonnt.fpmerchant.model.Product"
+            app:nullable="true" />
+    </fragment>
 </navigation>

@@ -4,4 +4,7 @@
     <item
         android:id="@+id/item_edit_product_menu"
         android:title="Sửa" />
+    <item
+        android:id="@+id/item_delete_item"
+        android:title="Xoá" />
 </menu>
