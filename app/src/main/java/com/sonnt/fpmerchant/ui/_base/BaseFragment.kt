@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -28,5 +29,9 @@ abstract class BaseFragment<T: ViewDataBinding>: Fragment() {
 
     protected fun setActionBarTitle(title: String) {
         (requireActivity() as AppCompatActivity).supportActionBar?.title = title
+    }
+
+    protected fun toast(content: String) {
+        Toast.makeText(requireContext(), content, Toast.LENGTH_LONG).show()
     }
 }

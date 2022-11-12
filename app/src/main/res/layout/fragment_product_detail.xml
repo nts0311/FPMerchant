@@ -11,9 +11,12 @@
         <variable
             name="index"
             type="int" />
+<!--        <variable-->
+<!--            name="item"-->
+<!--            type="com.sonnt.fpmerchant.model.Product" />-->
         <variable
-            name="item"
-            type="com.sonnt.fpmerchant.model.Product" />
+            name="viewModel"
+            type="com.sonnt.fpmerchant.ui.productdetail.ProductDetailViewModel" />
         <variable
             name="clickListener"
             type="Function0&lt;Unit>" />
@@ -39,16 +42,18 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spinner" />
+                app:layout_constraintTop_toBottomOf="@+id/spnMenu" />
 
             <Button
                 android:id="@+id/buttonAddAttrribute"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
                 android:background="@android:color/transparent"
                 android:text="+ Thêm thuộc tính"
                 android:textColor="@color/purple_700"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/rvAttributes"
                 app:layout_constraintStart_toStartOf="@+id/rvAttributes"
                 app:layout_constraintTop_toBottomOf="@+id/rvAttributes" />
@@ -98,7 +103,7 @@
                 android:layout_marginEnd="16dp"
                 android:ems="10"
                 android:hint="Tên"
-                android:text="@={item.name}"
+                android:text="@={viewModel.product.name}"
                 android:inputType="textPersonName"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -115,7 +120,7 @@
                 android:ems="10"
                 android:gravity="start|top"
                 android:hint="Mô tả"
-                android:text="@={item.description}"
+                android:text="@={viewModel.product.description}"
                 android:inputType="textMultiLine"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -137,18 +142,32 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/edtDescrription" />
 
+            <TextView
+                android:id="@+id/textView28"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chỉnh sửa ảnh"
+                app:layout_constraintBottom_toBottomOf="@+id/imgProduct"
+                app:layout_constraintEnd_toEndOf="@+id/imgProduct"
+                app:layout_constraintStart_toStartOf="@+id/imgProduct"
+                app:layout_constraintTop_toTopOf="@+id/imgProduct" />
+
             <ImageView
                 android:id="@+id/imgProduct"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="48dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="48dp"
+                android:background="@android:color/transparent"
+                app:layout_constraintDimensionRatio="h,1:1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout8"
-                tools:src="@tools:sample/avatars" />
+                app:srcUrl="@{viewModel.product.imageUrl}"
+                android:alpha="@{viewModel.isUploadingImage() ? 0.5f : 1f}"
+                tools:srcCompat="@tools:sample/avatars" />
 
             <Spinner
                 android:id="@+id/spinner"
@@ -171,6 +190,28 @@
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@+id/edtPrice"
                 app:layout_constraintTop_toBottomOf="@+id/edtPrice" />
+
+            <TextView
+                android:id="@+id/textView29"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Menu"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/spinner"
+                app:layout_constraintTop_toBottomOf="@+id/spinner" />
+
+            <Spinner
+                android:id="@+id/spnMenu"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView29" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

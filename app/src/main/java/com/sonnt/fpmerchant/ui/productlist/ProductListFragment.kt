@@ -66,6 +66,9 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
         viewModel.listProduct.observe(viewLifecycleOwner) {
             adapter.items = it
         }
+        viewModel.errorMessage.observe(viewLifecycleOwner) {
+            toast(it)
+        }
     }
 
     private fun setupView() {
@@ -100,7 +103,7 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
     }
 
     fun toProductDetailScreen(product: Product) {
-        val bundle = bundleOf("product" to product )
+        val bundle = bundleOf("product" to product, "menuId" to menuId )
         findNavController().navigate(R.id.productDetailFragment, bundle)
     }
 

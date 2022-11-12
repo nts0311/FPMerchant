@@ -20,6 +20,9 @@ data class Product(
     fun getPriceStr(): String {
         return price?.formatCurrency() ?: ""
     }
+
+    val isAvailable: Boolean
+        get() = status == "AVAILABLE"
 }
 
 @Parcelize

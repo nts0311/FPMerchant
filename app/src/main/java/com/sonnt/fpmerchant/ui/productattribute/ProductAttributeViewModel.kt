@@ -15,5 +15,13 @@ class ProductAttributeViewModel : BaseViewModel() {
         productAttribute.options.removeAt(pos)
     }
 
+    fun validateInput(): Boolean {
+        if (productAttribute.name.isNullOrEmpty()) {
+            error("Tên không hợp lệ")
+            return false
+        }
+
+        return true
+    }
 
 }

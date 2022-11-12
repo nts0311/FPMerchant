@@ -2,6 +2,7 @@ package com.sonnt.fpmerchant.ui.menu
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.sonnt.fpmerchant.data.repos.MenuRepo
 import com.sonnt.fpmerchant.model.ProductMenu
 import com.sonnt.fpmerchant.network.ApiResult
 import com.sonnt.fpmerchant.network.NetworkModule
@@ -12,36 +13,22 @@ import kotlinx.coroutines.launch
 class ProductMenuListViewModel: BaseViewModel() {
 
     val menus = MutableLiveData<List<ProductMenu>>()
+    val menuRepo = MenuRepo.shared
 
     fun getMenuList() {
         viewModelScope.launch {
-            val response = callApi { NetworkModule.menuService.getAllMenu() }
-
-            when (response) {
-                is ApiResult.Success -> {
-                    menus.value = response.data?.menus
-                }
-
-                is ApiResult.Failed -> {}
-            }
+            menus.value = menuRepo.getMenuList()
         }
     }
 
     fun addMenu(name: String) {
-
         viewModelScope.launch {
-            val menu = ProductMenu(name = name)
-            val response = callApi { NetworkModule.menuService.addMenu(menu) }
+            val isSuccess = menuRepo.addMenu(name)
 
-            when (response) {
-                is ApiResult.Success -> {
-                    val newMenu = response.data?.menu ?: return@launch
-                    val newListMenu = menus.value?.toMutableList() ?: return@launch
-                    newListMenu.add(newMenu)
-                    menus.value = newListMenu
-                }
-
-                is ApiResult.Failed -> {}
+            if (isSuccess) {
+                menus.value = menuRepo.menus
+            } else {
+                error("Lỗi khi thêm menu")
             }
         }
     }
@@ -49,16 +36,12 @@ class ProductMenuListViewModel: BaseViewModel() {
     fun editMenu(menu: ProductMenu) {
 
         viewModelScope.launch {
-            val response = callApi { NetworkModule.menuService.editMenu(menu) }
+            val isSuccess = menuRepo.editMenu(menu)
 
-            when (response) {
-                is ApiResult.Success -> {
-                    val menuList = menus.value?.toMutableList() ?: return@launch
-                    menuList.first { it.id == menu.id }.name = menu.name
-                    menus.value = menuList
-                }
-
-                is ApiResult.Failed -> {}
+            if (isSuccess) {
+                menus.value = menuRepo.menus
+            } else {
+                error("Lỗi khi sửa menu")
             }
         }
     }

@@ -62,9 +62,14 @@ class ProductAttributeFragment : BaseFragment<FragmentProductAttributeBinding>()
         }
 
         binding.btnSave.setOnClickListener {
-            Log.d("aaa",viewModel.productAttribute.toString())
-            setFragmentResult(resultKey, bundleOf("productAttribute" to viewModel.productAttribute))
-            findNavController().popBackStack()
+            if(viewModel.validateInput()) {
+                setFragmentResult(resultKey, bundleOf("productAttribute" to viewModel.productAttribute))
+                findNavController().popBackStack()
+            }
+        }
+
+        viewModel.errorMessage.observe(viewLifecycleOwner) {
+            toast(it)
         }
     }
 
@@ -115,9 +120,17 @@ class ProductAttributeFragment : BaseFragment<FragmentProductAttributeBinding>()
             if (edtOptionName.text.isNullOrEmpty() || edtOptionPrice.text.isNullOrEmpty()) {
                 Toast.makeText(requireContext(),"Điền đầy đủ thông tin.", Toast.LENGTH_LONG).show()
             } else {
+                var price = 0.0
+                try {
+                    price = edtOptionPrice.text.toString().toDouble()
+                } catch (e: Exception) {
+                    Toast.makeText(requireContext(), "Giá không hợp lệ", Toast.LENGTH_LONG).show()
+                    return@setPositiveButton
+                }
+
                 val result = option ?: ProductAttributeOption()
                 result.name = edtOptionName.text.toString()
-                result.price = edtOptionPrice.text.toString().toDouble()
+                result.price = price
                 positiveAction(result)
                 dialog.cancel()
             }
