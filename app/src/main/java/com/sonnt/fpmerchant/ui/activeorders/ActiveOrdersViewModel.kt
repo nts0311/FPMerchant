@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.sonnt.fpmerchant.data.repos.OrderRepository
 import com.sonnt.fpmerchant.message.WSConnectedEvent
 import com.sonnt.fpmerchant.model.OrderInfo
-import com.sonnt.fpmerchant.ui._base.BaseViewModel
+import com.sonnt.fpmerchant.ui.base.BaseViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus

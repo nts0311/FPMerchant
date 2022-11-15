@@ -1,4 +1,4 @@
-package com.sonnt.fpmerchant.ui._base
+package com.sonnt.fpmerchant.ui.base
 
 import android.graphics.drawable.Drawable
 import android.widget.ImageView

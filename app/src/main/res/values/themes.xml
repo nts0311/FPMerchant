@@ -37,4 +37,19 @@
 
 
     <style name="Theme.FPMerchant.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="MyShapeAppearanceOverlay" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12sp</item>
+    </style>
+
+    <style name="MyTextInputLayout" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="shapeAppearanceOverlay">@style/MyShapeAppearanceOverlay</item>
+    </style>
+
+    <style name="LightShadowStyle">
+        <item name="cardElevation">8dp</item>
+        <item name="android:outlineSpotShadowColor" tools:targetApi="p">@color/md_grey_500</item>
+        <item name="android:elevation">8dp</item>
+    </style>
 </resources>

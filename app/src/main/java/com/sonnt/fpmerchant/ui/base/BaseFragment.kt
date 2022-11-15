@@ -1,4 +1,4 @@
-package com.sonnt.fpmerchant.ui._base
+package com.sonnt.fpmerchant.ui.base
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -3,7 +3,7 @@ package com.sonnt.fpmerchant.ui.auth
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.sonnt.fpmerchant.data.local.AuthDataSource
-import com.sonnt.fpmerchant.ui._base.BaseViewModel
+import com.sonnt.fpmerchant.ui.base.BaseViewModel
 import com.sonnt.fpmerchant.network.ApiResult
 import com.sonnt.fpmerchant.network.NetworkModule
 import com.sonnt.fpmerchant.network.callApi

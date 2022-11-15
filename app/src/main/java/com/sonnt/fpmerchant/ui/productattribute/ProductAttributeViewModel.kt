@@ -2,7 +2,7 @@ package com.sonnt.fpmerchant.ui.productattribute
 
 import com.sonnt.fpmerchant.model.ProductAttribute
 import com.sonnt.fpmerchant.model.ProductAttributeOption
-import com.sonnt.fpmerchant.ui._base.BaseViewModel
+import com.sonnt.fpmerchant.ui.base.BaseViewModel
 
 class ProductAttributeViewModel : BaseViewModel() {
     var productAttribute = ProductAttribute(multiple = false, required = false)

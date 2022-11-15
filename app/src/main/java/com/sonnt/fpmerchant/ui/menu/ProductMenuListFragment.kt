@@ -11,8 +11,8 @@ import com.sonnt.fpmerchant.R
 import com.sonnt.fpmerchant.databinding.FragmentProductMenuListBinding
 import com.sonnt.fpmerchant.databinding.ItemProductMenuBinding
 import com.sonnt.fpmerchant.model.ProductMenu
-import com.sonnt.fpmerchant.ui._base.BaseFragment
-import com.sonnt.fpmerchant.ui._base.BaseRecyclerViewAdapter
+import com.sonnt.fpmerchant.ui.base.BaseFragment
+import com.sonnt.fpmerchant.ui.base.BaseRecyclerViewAdapter
 import com.sonnt.fpmerchant.utils.createTextDialog
 
 

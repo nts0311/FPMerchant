@@ -7,6 +7,7 @@ import com.sonnt.fpdriver.network.dto.response.BaseResponse
 import com.sonnt.fpmerchant.model.Product
 import com.sonnt.fpmerchant.network.dto.response.GetProductByMenuResponse
 import com.sonnt.fpmerchant.network.dto.response.ProductCategoryResponse
+import com.sonnt.fpmerchant.network.dto.response.ProductResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -22,4 +23,7 @@ interface ProductService {
 
     @POST("merchant/product/edit")
     suspend fun editProduct(@Body product: Product): Response<BaseResponse>
+
+    @POST("merchant/product/add")
+    suspend fun addProduct(@Body product: Product): Response<ProductResponse>
 }

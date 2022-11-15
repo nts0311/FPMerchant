@@ -1,16 +1,11 @@
 package com.sonnt.fpmerchant.ui.home
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.tabs.TabLayoutMediator
 import com.sonnt.fpmerchant.R
 import com.sonnt.fpmerchant.databinding.FragmentHomeBinding
-import com.sonnt.fpmerchant.ui._base.BaseFragment
+import com.sonnt.fpmerchant.ui.base.BaseFragment
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     override var layoutResId: Int = R.layout.fragment_home

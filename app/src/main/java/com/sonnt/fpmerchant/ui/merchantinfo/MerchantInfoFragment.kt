@@ -7,7 +7,7 @@ import androidx.fragment.app.viewModels
 import com.sonnt.fpmerchant.R
 import com.sonnt.fpmerchant.databinding.FragmentMerchantInfoBinding
 import com.sonnt.fpmerchant.network.dto.response.GetMerchantInfoResponse
-import com.sonnt.fpmerchant.ui._base.BaseFragment
+import com.sonnt.fpmerchant.ui.base.BaseFragment
 import java.time.LocalTime
 
 

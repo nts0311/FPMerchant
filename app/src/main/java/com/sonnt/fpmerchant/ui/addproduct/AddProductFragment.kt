@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.sonnt.fpmerchant.R
-import com.sonnt.fpmerchant.ui._base.BaseFragment
 
 class AddProductFragment : Fragment() {
 

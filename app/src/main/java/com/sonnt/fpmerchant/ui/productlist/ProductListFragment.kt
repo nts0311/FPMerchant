@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,8 +12,9 @@ import com.sonnt.fpmerchant.R
 import com.sonnt.fpmerchant.databinding.FragmentProductListBinding
 import com.sonnt.fpmerchant.databinding.ItemProductBinding
 import com.sonnt.fpmerchant.model.Product
-import com.sonnt.fpmerchant.ui._base.BaseFragment
-import com.sonnt.fpmerchant.ui._base.BaseRecyclerViewAdapter
+import com.sonnt.fpmerchant.ui.base.BaseFragment
+import com.sonnt.fpmerchant.ui.base.BaseRecyclerViewAdapter
+import com.sonnt.fpmerchant.ui.productdetail.ProductDetailFragment
 
 class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
 
@@ -29,6 +31,12 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
         setHasOptionsMenu(true)
         arguments?.let {
             menuId = it.getLong("menuId")
+        }
+        setFragmentResultListener(ProductDetailFragment.resultKey) { requestKey, bundle ->
+            val isChanged = bundle.getBoolean("changed")
+            if (isChanged) {
+                viewModel.getProductByMenu(menuId)
+            }
         }
     }
 
@@ -55,7 +63,7 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.item_add_product_menu) {
-            addMenu()
+            addProduct()
             return true
         }
 
@@ -84,8 +92,8 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
         }
     }
 
-    private fun addMenu() {
-
+    private fun addProduct() {
+        findNavController().navigate(R.id.productDetailFragment)
     }
 
     private fun createItemPopupMenu(view: View, product: Product) {

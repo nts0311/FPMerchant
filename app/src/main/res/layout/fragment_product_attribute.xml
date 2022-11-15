@@ -20,7 +20,34 @@
         android:layout_height="match_parent"
         tools:context=".ui.productattribute.ProductAttributeFragment">
 
-        <LinearLayout
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutName"
+            style="@style/MyTextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            app:endIconMode="clear_text"
+            app:hintEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Tên"
+                android:imeOptions="actionNext"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:text="@={productAttribute.name}" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--<LinearLayout
             android:id="@+id/linearLayout6"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -52,7 +79,7 @@
                 android:text="@={productAttribute.name}"
                 android:inputType="textPersonName" />
         </LinearLayout>
-
+-->
         <LinearLayout
             android:id="@+id/linearLayout7"
             android:layout_width="0dp"
@@ -64,7 +91,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout6">
+            app:layout_constraintTop_toBottomOf="@+id/layoutName">
 
             <CheckBox
                 android:id="@+id/chkRequired"

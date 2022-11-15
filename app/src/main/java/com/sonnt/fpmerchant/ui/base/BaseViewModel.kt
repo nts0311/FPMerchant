@@ -1,4 +1,4 @@
-package com.sonnt.fpmerchant.ui._base
+package com.sonnt.fpmerchant.ui.base
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

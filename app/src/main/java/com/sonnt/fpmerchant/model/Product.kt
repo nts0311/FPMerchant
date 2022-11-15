@@ -2,6 +2,7 @@ package com.sonnt.fpmerchant.model
 
 import android.os.Parcelable
 import com.sonnt.fpmerchant.utils.formatCurrency
+import com.sonnt.fpmerchant.utils.formatCurrencyWithoutCurrency
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -19,6 +20,10 @@ data class Product(
 ): Parcelable {
     fun getPriceStr(): String {
         return price?.formatCurrency() ?: ""
+    }
+
+    fun getPriceStrWithoutCurrency(): String {
+        return price?.formatCurrencyWithoutCurrency() ?: ""
     }
 
     val isAvailable: Boolean

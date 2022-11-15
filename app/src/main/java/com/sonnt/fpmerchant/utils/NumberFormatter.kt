@@ -17,3 +17,8 @@ fun Double.formatCurrency(): String {
     val amount = this.toLong()
     return NumberFormatter.format(amount) + "đ"
 }
+
+fun Double.formatCurrencyWithoutCurrency(): String {
+    val amount = this.toLong()
+    return NumberFormatter.format(amount)
+}

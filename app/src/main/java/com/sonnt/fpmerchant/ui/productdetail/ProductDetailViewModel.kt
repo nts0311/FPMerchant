@@ -7,14 +7,12 @@ import com.cloudinary.android.MediaManager
 import com.cloudinary.android.callback.ErrorInfo
 import com.cloudinary.android.callback.UploadCallback
 import com.sonnt.fpmerchant.FpMerchantApplication
-import com.sonnt.fpmerchant.data.repos.MenuRepo
 import com.sonnt.fpmerchant.data.repos.ProductRepository
 import com.sonnt.fpmerchant.model.*
 import com.sonnt.fpmerchant.network.ApiResult
 import com.sonnt.fpmerchant.network.NetworkModule
 import com.sonnt.fpmerchant.network.callApi
-import com.sonnt.fpmerchant.network.dto.request.ChangeMerchantActivityStatusRequest
-import com.sonnt.fpmerchant.ui._base.BaseViewModel
+import com.sonnt.fpmerchant.ui.base.BaseViewModel
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
@@ -25,9 +23,6 @@ class ProductDetailViewModel : BaseViewModel() {
             field = value
             onSetProduct()
         }
-
-    val menus: List<ProductMenu>
-        get() = MenuRepo.shared.menus
 
     val isCreatingNewProduct: Boolean
         get() = product.id == null
@@ -113,23 +108,10 @@ class ProductDetailViewModel : BaseViewModel() {
         product.categoryId = category.id
     }
 
-    fun setMenu(adapterPos: Int) {
-        val menu = MenuRepo.shared.menus[adapterPos]
-
-        if (menu.id == product.tagId) {
-            return
-        }
-
-        product.tagId = menu.id
-    }
-
     fun getCategoriesPos(): Int {
         return categories.value?.indexOfFirst { it.id == product.categoryId } ?: -1
     }
 
-    fun getMenuPos(): Int {
-        return menus.indexOfFirst { it.id == product.tagId }
-    }
 
     fun setProductAvailability(availableNow: Boolean) {
         product.status = if(availableNow) "AVAILABLE" else "OUT_OF_STOCK"
@@ -166,9 +148,20 @@ class ProductDetailViewModel : BaseViewModel() {
     }
 
     fun saveProduct() {
+
+        if (!validateInput()) {
+            return
+        }
+
         viewModelScope.launch {
             if (isCreatingNewProduct) {
-
+                product.tagId = menuId
+                val isSuccess = ProductRepository.shared.addProduct(product)
+                if (isSuccess) {
+                    result.value = true
+                } else {
+                    error("Lỗi khi thêm sản phẩm.")
+                }
             } else {
                 val isSuccess = ProductRepository.shared.editProduct(product)
                 if (isSuccess) {

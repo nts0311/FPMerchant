@@ -8,7 +8,7 @@ import com.sonnt.fpmerchant.network.callApi
 import com.sonnt.fpmerchant.network.dto.request.ChangeMerchantActiveHourRequest
 import com.sonnt.fpmerchant.network.dto.request.ChangeMerchantActivityStatusRequest
 import com.sonnt.fpmerchant.network.dto.response.GetMerchantInfoResponse
-import com.sonnt.fpmerchant.ui._base.BaseViewModel
+import com.sonnt.fpmerchant.ui.base.BaseViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalTime
 

@@ -1,7 +1,6 @@
 package com.sonnt.fpmerchant.ui.productattribute
 
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuInflater
 import android.view.View
 import android.widget.EditText
@@ -18,8 +17,8 @@ import com.sonnt.fpmerchant.databinding.FragmentProductAttributeBinding
 import com.sonnt.fpmerchant.databinding.ItemProductAttributeOptionBinding
 import com.sonnt.fpmerchant.model.ProductAttribute
 import com.sonnt.fpmerchant.model.ProductAttributeOption
-import com.sonnt.fpmerchant.ui._base.BaseFragment
-import com.sonnt.fpmerchant.ui._base.BaseRecyclerViewAdapter
+import com.sonnt.fpmerchant.ui.base.BaseFragment
+import com.sonnt.fpmerchant.ui.base.BaseRecyclerViewAdapter
 
 
 class ProductAttributeFragment : BaseFragment<FragmentProductAttributeBinding>() {

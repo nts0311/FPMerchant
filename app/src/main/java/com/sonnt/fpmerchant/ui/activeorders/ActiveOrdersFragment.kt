@@ -11,10 +11,9 @@ import com.sonnt.fpmerchant.R
 import com.sonnt.fpmerchant.databinding.FragmentActiveOrdersBinding
 import com.sonnt.fpmerchant.databinding.ItemOrderBinding
 import com.sonnt.fpmerchant.model.OrderInfo
-import com.sonnt.fpmerchant.ui._base.BaseFragment
-import com.sonnt.fpmerchant.ui._base.BaseRecyclerViewAdapter
+import com.sonnt.fpmerchant.ui.base.BaseFragment
+import com.sonnt.fpmerchant.ui.base.BaseRecyclerViewAdapter
 import com.sonnt.fpmerchant.ui.activeorderdetail.ActiveOrderDetailFragment
-import com.sonnt.fpmerchant.ui.activeorderdetail.ActiveOrderDetailViewModel
 
 class ActiveOrdersFragment : BaseFragment<FragmentActiveOrdersBinding>() {
 

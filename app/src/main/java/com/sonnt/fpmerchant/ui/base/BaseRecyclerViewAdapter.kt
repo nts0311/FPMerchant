@@ -1,12 +1,9 @@
-package com.sonnt.fpmerchant.ui._base
+package com.sonnt.fpmerchant.ui.base
 
-import android.R
 import android.view.LayoutInflater
-import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
-import androidx.appcompat.widget.PopupMenu
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView

@@ -13,6 +13,8 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.os.bundleOf
+import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -25,8 +27,8 @@ import com.sonnt.fpmerchant.databinding.ItemProductAttributeBinding
 import com.sonnt.fpmerchant.model.Product
 import com.sonnt.fpmerchant.model.ProductAttribute
 import com.sonnt.fpmerchant.model.ProductCategory
-import com.sonnt.fpmerchant.ui._base.BaseFragment
-import com.sonnt.fpmerchant.ui._base.BaseRecyclerViewAdapter
+import com.sonnt.fpmerchant.ui.base.BaseFragment
+import com.sonnt.fpmerchant.ui.base.BaseRecyclerViewAdapter
 import com.sonnt.fpmerchant.ui.productattribute.ProductAttributeFragment
 
 class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding>() {
@@ -116,8 +118,12 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding>() {
                 ImagePicker.with(this@ProductDetailFragment)
                     .start()
             }
+
+            edtPrice.addTextChangedListener {
+                val price = it.toString().replace(",","")
+                this@ProductDetailFragment.viewModel.product.price = if(price.isEmpty()) 0.0 else price.toDouble()
+            }
         }
-        setupMenuSpinner()
     }
 
     private fun bindViewModel() {
@@ -128,11 +134,18 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding>() {
 
         viewModel.result.observe(viewLifecycleOwner) {isSuccess ->
             if (viewModel.isCreatingNewProduct) {
-
+                setFragmentResult(ProductAttributeFragment.resultKey, bundleOf("changed" to true))
+                findNavController().popBackStack()
             } else {
                 val msg = if (isSuccess) "Cập nhập thay đổi thành công!" else "Cập nhập thay đổi thất bại!"
                 toast(msg)
+                setFragmentResult(ProductAttributeFragment.resultKey, bundleOf("changed" to true))
+                findNavController().popBackStack()
             }
+        }
+
+        viewModel.errorMessage.observe(viewLifecycleOwner) {
+            toast(it)
         }
     }
 
@@ -155,7 +168,7 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding>() {
 
         binding.switchStatus.isChecked = product.isAvailable
         binding.edtPrice.setText(product.price.toString())
-        binding.spnMenu.setSelection(viewModel.getMenuPos())
+
     }
 
     private fun setupCategorySpinner(categories: List<ProductCategory>) {
@@ -174,25 +187,6 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding>() {
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
-    }
-
-    private fun setupMenuSpinner() {
-        val adapter = ArrayAdapter(requireContext(), R.layout.item_single_text, viewModel.menus.map { it.name })
-
-        binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                viewModel.setMenu(position)
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-        }
-
-        binding.spnMenu.adapter = adapter
     }
 
     private fun createItemPopupMenu(view: View, pos: Int, attribute: ProductAttribute) {
@@ -223,4 +217,7 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding>() {
         findNavController().navigate(R.id.productAttributeFragment, bundle)
     }
 
+    companion object {
+        const val resultKey = "resultKey"
+    }
 }

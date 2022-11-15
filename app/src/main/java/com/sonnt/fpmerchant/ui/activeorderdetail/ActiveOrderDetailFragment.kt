@@ -1,10 +1,7 @@
 package com.sonnt.fpmerchant.ui.activeorderdetail
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
@@ -15,8 +12,8 @@ import com.sonnt.fpmerchant.databinding.FragmentActiveOrderDetailBinding
 import com.sonnt.fpmerchant.databinding.ItemOrderedItemBinding
 import com.sonnt.fpmerchant.model.OrderInfo
 import com.sonnt.fpmerchant.model.OrderedProductItem
-import com.sonnt.fpmerchant.ui._base.BaseFragment
-import com.sonnt.fpmerchant.ui._base.BaseRecyclerViewAdapter
+import com.sonnt.fpmerchant.ui.base.BaseFragment
+import com.sonnt.fpmerchant.ui.base.BaseRecyclerViewAdapter
 
 
 private const val ARG_ORDER_INFO = "arg_order_info"

@@ -46,7 +46,7 @@
     <fragment
         android:id="@+id/productMenuListFragment"
         android:name="com.sonnt.fpmerchant.ui.menu.ProductMenuListFragment"
-        android:label="ProductMenuListFragment" >
+        android:label="Danh sách menu">
         <action
             android:id="@+id/action_productMenuListFragment_to_productListFragment"
             app:destination="@id/productListFragment" />
@@ -54,7 +54,7 @@
     <fragment
         android:id="@+id/productListFragment"
         android:name="com.sonnt.fpmerchant.ui.productlist.ProductListFragment"
-        android:label="ProductListFragment" >
+        android:label="Danh sách sản phẩm">
         <argument
             android:name="menuId"
             app:argType="long" />
