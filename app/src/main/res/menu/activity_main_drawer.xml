@@ -17,4 +17,26 @@
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Quản lý nhà hàng" />
     </group>
+
+
+    <item
+        android:checkable="false"
+        android:enabled="false"
+        android:title="Thống kê" />
+    <group
+        android:checkableBehavior="all"
+        android:visible="true">
+        <item
+            android:id="@+id/revenueStatsFragment"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Thống kê doanh thu" />
+        <item
+            android:id="@+id/orderStatFragment"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Thống kê đơn hàng" />
+        <item
+            android:id="@+id/productStatFragment"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Quản lý nhà hàng" />
+    </group>
 </menu>

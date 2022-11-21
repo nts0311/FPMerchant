@@ -30,4 +30,5 @@ object NetworkModule {
     var menuService: ProductMenuService = retrofit.create(ProductMenuService::class.java)
     var productService: ProductService = retrofit.create(ProductService::class.java)
     var infoService: InfoService = retrofit.create(InfoService::class.java)
+    var statsService: StatsService = retrofit.create(StatsService::class.java)
 }

@@ -65,7 +65,7 @@
     <fragment
         android:id="@+id/merchantInfoFragment"
         android:name="com.sonnt.fpmerchant.ui.merchantinfo.MerchantInfoFragment"
-        android:label="MerchantInfoFragment" />
+        android:label="Quản lý nhà hàng" />
     <fragment
         android:id="@+id/productDetailFragment"
         android:name="com.sonnt.fpmerchant.ui.productdetail.ProductDetailFragment"
@@ -78,4 +78,8 @@
             app:argType="com.sonnt.fpmerchant.model.Product"
             app:nullable="true" />
     </fragment>
+    <fragment
+        android:id="@+id/revenueStatsFragment"
+        android:name="com.sonnt.fpmerchant.ui.stats.revenue.RevenueStatsFragment"
+        android:label="Thống kê doanh thu" />
 </navigation>
