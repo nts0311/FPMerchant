@@ -5,6 +5,7 @@ import com.sonnt.fpmerchant.model.Product
 import com.sonnt.fpmerchant.model.ProductCategory
 import com.sonnt.fpmerchant.model.ProductMenu
 import com.sonnt.fpmerchant.ui.selectdateview.MarkerData
+import com.sonnt.fpmerchant.ui.stats.revenue.PieEntryStat
 import com.sonnt.fpmerchant.utils.formatCurrency
 import com.sonnt.fpmerchant.utils.standardFormat
 import java.time.LocalDate
@@ -24,22 +25,44 @@ data class DayRevenueStat(
     override val markerContent: String
     get() {
         val ld = LocalDate.parse(date)
-        return "${ld.standardFormat()}\n${revenue.formatCurrency()}"
+        return "${ld.standardFormat()} \n ${revenue.formatCurrency()}"
     }
 }
 
 data class CategoriesRevenueStat(
     val category: ProductCategory,
     val percentage: Double
-)
+): PieEntryStat {
+    override val value: Float
+        get() = percentage.toFloat()
+    override val label: String
+        get() = category.name ?: ""
+}
 
 data class MenuRevenueStat(
     val menu: ProductMenu,
     val percentage: Double
-)
+): PieEntryStat {
+    override val value: Float
+        get() = percentage.toFloat()
+    override val label: String
+        get() = menu.name ?: ""
+}
 
 data class ProductRevenueStat(
-    val product: Product,
+    val productName: String,
+    val productCategoryName: String,
+    val productImageUrl: String?,
+    val productMenuName: String,
+    val productPrice: Double,
     val revenue: Double,
     val count: Int
-)
+) {
+    fun getPriceStr(): String {
+        return productPrice.formatCurrency()
+    }
+
+    fun getRevenueStr(): String {
+        return revenue.formatCurrency()
+    }
+}

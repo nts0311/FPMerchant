@@ -3,18 +3,24 @@ package com.sonnt.fpmerchant.ui.stats.revenue
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.widget.BaseAdapter
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.LargeValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
+import com.github.mikephil.charting.utils.MPPointF
 import com.sonnt.fpmerchant.R
 import com.sonnt.fpmerchant.databinding.FragmentRevenueStatsBinding
+import com.sonnt.fpmerchant.databinding.ItemProductRevenueStatBinding
 import com.sonnt.fpmerchant.network.dto.response.DayRevenueStat
+import com.sonnt.fpmerchant.network.dto.response.ProductRevenueStat
 import com.sonnt.fpmerchant.ui.base.BaseFragment
+import com.sonnt.fpmerchant.ui.base.BaseRecyclerViewAdapter
 import com.sonnt.fpmerchant.ui.selectdateview.MyMarkerView
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -23,6 +29,8 @@ class RevenueStatsFragment : BaseFragment<FragmentRevenueStatsBinding>() {
     override var layoutResId: Int = R.layout.fragment_revenue_stats
 
     private val viewModel: RevenueStatsViewModel by viewModels()
+
+    private lateinit var productAdapter: BaseRecyclerViewAdapter<ProductRevenueStat, ItemProductRevenueStatBinding>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -36,11 +44,34 @@ class RevenueStatsFragment : BaseFragment<FragmentRevenueStatsBinding>() {
         }
 
         setupRevenueDayChart(binding.revenueByDayChart)
+
+        setupPieChart(binding.categoryStatChart, true)
+        setupPieChart(binding.menuStatChart)
+
+        setupRecycleView()
+    }
+
+    private fun setupRecycleView() {
+        productAdapter = BaseRecyclerViewAdapter(R.layout.item_product_revenue_stat)
+        binding.rvProducts.adapter = productAdapter
+        binding.rvProducts.layoutManager = LinearLayoutManager(requireContext())
     }
 
     private fun bindViewModel() {
         viewModel.revenueChartData.observe(viewLifecycleOwner) {
             drawRevenueByDayChart(it)
+        }
+
+        viewModel.revenueByCategoryChartData.observe(viewLifecycleOwner) {
+            drawPieChart(binding.categoryStatChart, it)
+        }
+
+        viewModel.revenueByMenuChartData.observe(viewLifecycleOwner) {
+            drawPieChart(binding.menuStatChart, it)
+        }
+
+        viewModel.productRevenueData.observe(viewLifecycleOwner) {
+            productAdapter.items = it
         }
     }
 
@@ -61,12 +92,36 @@ class RevenueStatsFragment : BaseFragment<FragmentRevenueStatsBinding>() {
                 setSuffix(arrayOf("đ", "K đ", "Tr đ", "Tỷ đ", "K.Tỷ đ"))
             }
             axisLeft.axisMinimum = 0.0f
-            xAxis.labelRotationAngle = 45f
+            xAxis.labelRotationAngle = 60f
 
             // create marker to display box when values are selected
             val mv = MyMarkerView(context, R.layout.custom_marker)
             mv.chartView = this
             marker = mv
+        }
+    }
+
+    private fun setupPieChart(pieChart: PieChart, isLegendOnRight: Boolean = false ) {
+        pieChart.apply {
+            setTransparentCircleColor(Color.rgb(36, 36, 36))
+            transparentCircleRadius = 65f
+            isRotationEnabled = false
+            setDrawEntryLabels(false)
+            description.isEnabled = false
+            isHighlightPerTapEnabled = false
+            setUsePercentValues(true)
+        }
+
+        pieChart.legend.apply {
+            isEnabled = true
+            orientation = Legend.LegendOrientation.VERTICAL
+            isWordWrapEnabled = true
+            /*textSize = 12F
+            formSize = 12F*/
+
+            isWordWrapEnabled = true
+            horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
+            verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
         }
     }
 
@@ -95,4 +150,25 @@ class RevenueStatsFragment : BaseFragment<FragmentRevenueStatsBinding>() {
         binding.revenueByDayChart.data = lineData
         binding.revenueByDayChart.invalidate()
     }
+
+    private fun drawPieChart(pieChart: PieChart, pieEntries: List<PieEntry>) {
+        val dataSet = PieDataSet(pieEntries, "").apply {
+            colors = listOf(
+                Color.rgb(5, 64, 82), Color.rgb(24, 184, 130),
+                Color.rgb(37, 168, 230), Color.rgb(242, 198, 7),
+                Color.rgb(237, 91, 28), Color.rgb(224, 139, 90)
+            )
+
+            setDrawValues(true)
+            valueTextColor = Color.rgb(255,255,255)
+            valueTextSize = 14.0f
+        }
+
+        val data = PieData(dataSet)
+
+        pieChart.data = data
+        pieChart.invalidate()
+
+    }
+
 }
