@@ -31,12 +31,8 @@
             android:icon="@drawable/ic_menu_camera"
             android:title="Thống kê doanh thu" />
         <item
-            android:id="@+id/orderStatFragment"
+            android:id="@+id/ordersStatsFragment"
             android:icon="@drawable/ic_menu_gallery"
             android:title="Thống kê đơn hàng" />
-        <item
-            android:id="@+id/productStatFragment"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Quản lý nhà hàng" />
     </group>
 </menu>

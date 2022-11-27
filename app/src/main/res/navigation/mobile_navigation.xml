@@ -82,4 +82,8 @@
         android:id="@+id/revenueStatsFragment"
         android:name="com.sonnt.fpmerchant.ui.stats.revenue.RevenueStatsFragment"
         android:label="Thống kê doanh thu" />
+    <fragment
+        android:id="@+id/ordersStatsFragment"
+        android:name="com.sonnt.fpmerchant.ui.stats.orders.OrdersStatsFragment"
+        android:label="OrdersStatsFragment" />
 </navigation>

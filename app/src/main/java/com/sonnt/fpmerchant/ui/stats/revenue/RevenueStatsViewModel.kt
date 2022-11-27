@@ -1,23 +1,22 @@
 package com.sonnt.fpmerchant.ui.stats.revenue
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieEntry
 import com.sonnt.fpmerchant.network.ApiResult
 import com.sonnt.fpmerchant.network.NetworkModule
 import com.sonnt.fpmerchant.network.callApi
-import com.sonnt.fpmerchant.network.dto.response.CategoriesRevenueStat
 import com.sonnt.fpmerchant.network.dto.response.DayRevenueStat
 import com.sonnt.fpmerchant.network.dto.response.ProductRevenueStat
 import com.sonnt.fpmerchant.network.dto.response.RevenueStatsResponse
 import com.sonnt.fpmerchant.ui.base.BaseViewModel
+import com.sonnt.fpmerchant.utils.formatCurrency
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class DayRevenueEntry(
+class LineStatEntry(
     val title: String,
     val entry: Entry
 )
@@ -29,10 +28,11 @@ interface PieEntryStat {
 
 class RevenueStatsViewModel: BaseViewModel() {
 
-    val revenueChartData = MutableLiveData<List<DayRevenueEntry>>()
+    val revenueChartData = MutableLiveData<List<LineStatEntry>>()
     val revenueByCategoryChartData = MutableLiveData<List<PieEntry>>()
     val revenueByMenuChartData = MutableLiveData<List<PieEntry>>()
     val productRevenueData = MutableLiveData<List<ProductRevenueStat>>()
+    val totalRevenue = MutableLiveData<String>()
 
     fun getRevenueStats(fromDate: LocalDate, toDate: LocalDate) {
 
@@ -70,19 +70,12 @@ class RevenueStatsViewModel: BaseViewModel() {
         }
         val revenueEntries = List(revenueByDays.size) { i -> Entry(i.toFloat(), revenueByDays[i].revenue.toFloat(), revenueByDays[i]) }
 
+        totalRevenue.value = response.revenueByDay.fold(0.0) {acc, stat -> acc + stat.revenue}.formatCurrency()
+
         revenueChartData.value = revenueByDays.mapIndexed { index, dayRevenueStat ->
-
             val currentEntryDate = LocalDate.parse(revenueByDays[index].date)
-//            val beforeEntryDate = LocalDate.parse ((revenueByDays.getOrNull(index - 1) ?: revenueByDays[index]).date)
-//            val title = if (currentEntryDate.month != beforeEntryDate.month) currentEntryDate.format(
-//                DateTimeFormatter.ofPattern("dd/MM"))
-//            else {
-//                if (currentEntryDate.dayOfMonth % 5 == 0) currentEntryDate.dayOfMonth.toString()
-//                else ""
-//            }
-
             val title = if(index % 2 == 0) currentEntryDate.format(DateTimeFormatter.ofPattern("dd/MM")) else ""
-            DayRevenueEntry(title, revenueEntries[index])
+            LineStatEntry(title, revenueEntries[index])
         }
     }
 

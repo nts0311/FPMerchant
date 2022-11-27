@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@color/white"
+    android:background="@color/md_blue_grey_100"
     tools:ignore="Overdraw">
 
     <TextView
@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:ellipsize="end"
+        android:padding="4dp"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/black"
         android:textSize="12sp" />

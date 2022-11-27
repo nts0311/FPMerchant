@@ -38,6 +38,8 @@ class LoginViewModel: BaseViewModel() {
     private fun onLoginSuccess(authResponse:  ApiResult.Success<AuthenticationResponse?>) {
         authResponse.data?.also {
             AuthDataSource.authToken = it.jwtToken
+            AuthDataSource.name = it.name ?: ""
+            AuthDataSource.avatarURL = it.avatarUrl ?: ""
             isLoginSuccess.value = true
         }
     }
