@@ -3,6 +3,7 @@ package com.sonnt.fpmerchant.data.repos
 import androidx.lifecycle.viewModelScope
 import com.sonnt.fpmerchant.di.AppModule
 import com.sonnt.fpmerchant.model.OrderInfo
+import com.sonnt.fpmerchant.model.OrderStatus
 import com.sonnt.fpmerchant.network.ApiResult
 import com.sonnt.fpmerchant.network.Endpoint
 import com.sonnt.fpmerchant.network.NetworkModule
@@ -15,6 +16,17 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.util.*
 
+class CanceledOrderMessage(
+    val id: Long,
+    val reason: String
+)
+
+class DriverArrivedAtMerchantMessage(
+    val orderId: Long,
+    val driverName: String,
+    val driverPlate: String
+)
+
 class OrderRepository private constructor() {
     private val stompMessageHub = AppModule.provideStompMessageHub()
     private val orderService = NetworkModule.orderService
@@ -25,6 +37,8 @@ class OrderRepository private constructor() {
 
     private var newOrderRequestFlow: Flow<OrderInfo>? = null
     private var orderCompletedFlow: Flow<OrderInfo>? = null
+    private var orderCanceledFlow: Flow<CanceledOrderMessage>? = null
+    private var driverArrivedFlow: Flow<DriverArrivedAtMerchantMessage>? = null
 
     fun getNewOrderRequestFlow(): Flow<OrderInfo> {
         if (newOrderRequestFlow == null) {
@@ -53,6 +67,35 @@ class OrderRepository private constructor() {
         }
 
         return orderCompletedFlow!!
+    }
+
+    fun getOrderCanceledFlow(): Flow<CanceledOrderMessage> {
+        if (orderCanceledFlow == null) {
+            orderCanceledFlow = stompMessageHub.subscribeTo(Endpoint.orderStatus, WSMessage::class.java)
+                ?.filter { it.code == WSMessageCode.CANCEL_ORDER.code }
+                ?.map {message ->
+                    AppModule.provideGson().fromJson(message.body, CanceledOrderMessage::class.java)
+                }
+                ?.onEach {cancelOrderInfo ->
+                    activeOrders.removeAll { it.orderId == cancelOrderInfo.id }
+                }
+                ?.shareIn(coroutineScope, SharingStarted.Eagerly, 0)
+        }
+
+        return orderCanceledFlow!!
+    }
+
+    fun subscribeDriverArrivedFlow() {
+        stompMessageHub.subscribeTo(Endpoint.orderStatus, WSMessage::class.java)
+            ?.filter { it.code == WSMessageCode.DRIVER_ARRIVED_TO_MERCHANT.code }
+            ?.map {message ->
+                AppModule.provideGson().fromJson(message.body, DriverArrivedAtMerchantMessage::class.java)
+            }
+            ?.onEach { info ->
+                val order = activeOrders.firstOrNull { it.orderId == info.orderId }
+                order?.orderStatus = OrderStatus.PICKING_UP.value
+            }
+            ?.launchIn(coroutineScope)
     }
 
     suspend fun getActiveOrders(): List<OrderInfo>? {

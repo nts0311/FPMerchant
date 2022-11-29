@@ -62,7 +62,7 @@ enum class OrderStatus(val value: String) : Parcelable {
 @Parcelize
 data class OrderInfo(
     val orderId: Long,
-    val orderStatus: String,
+    var orderStatus: String,
     val createdDate: String,
     val driverAcceptTime: String?,
     val fromAddress: Address,
@@ -76,6 +76,11 @@ data class OrderInfo(
     val merchantPhone: String,
     val driverInfo: DriverDTO?
 ) : Parcelable {
+    val isOrderCancelable: Boolean
+    get() {
+        return orderStatus == OrderStatus.PREPARING.value
+    }
+
     fun getOrderStatus(): OrderStatus {
         return OrderStatus.valueOf(orderStatus)
     }

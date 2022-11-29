@@ -129,7 +129,7 @@ class RevenueStatsFragment : BaseFragment<FragmentRevenueStatsBinding>() {
             valueFormatter = object : ValueFormatter() {
                 override fun getFormattedValue(value: Float): String {
                     val xVal = value.toInt()
-                    if (xVal >= dayRevenues.size) return ""
+                    if (xVal >= dayRevenues.size || xVal < 0) return ""
 
                     return dayRevenues[xVal].title
                 }

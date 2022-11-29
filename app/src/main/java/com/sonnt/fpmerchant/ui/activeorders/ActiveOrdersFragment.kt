@@ -14,6 +14,7 @@ import com.sonnt.fpmerchant.model.OrderInfo
 import com.sonnt.fpmerchant.ui.base.BaseFragment
 import com.sonnt.fpmerchant.ui.base.BaseRecyclerViewAdapter
 import com.sonnt.fpmerchant.ui.activeorderdetail.ActiveOrderDetailFragment
+import com.sonnt.fpmerchant.ui.base.createDialog
 
 class ActiveOrdersFragment : BaseFragment<FragmentActiveOrdersBinding>() {
 
@@ -38,6 +39,10 @@ class ActiveOrdersFragment : BaseFragment<FragmentActiveOrdersBinding>() {
     private fun setupBinding() {
         viewModel.activeOrders.observe(viewLifecycleOwner) {
             adapter.items = it
+        }
+
+        viewModel.message.observe(viewLifecycleOwner) {
+            requireContext().createDialog(content = it)
         }
     }
 

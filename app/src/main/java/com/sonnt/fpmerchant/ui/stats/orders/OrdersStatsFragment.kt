@@ -76,7 +76,7 @@ class OrdersStatsFragment : BaseFragment<FragmentOrdersStatsBinding>() {
             valueFormatter = object : ValueFormatter() {
                 override fun getFormattedValue(value: Float): String {
                     val xVal = value.toInt()
-                    if (xVal >= data.size) return ""
+                    if (xVal >= data.size || xVal < 0) return ""
 
                     return data[xVal].title
                 }

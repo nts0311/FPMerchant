@@ -14,6 +14,7 @@ import org.greenrobot.eventbus.Subscribe
 class ActiveOrdersViewModel: BaseViewModel() {
 
     val activeOrders = MutableLiveData<List<OrderInfo>>()
+    val message = MutableLiveData<String>()
 
     init {
         EventBus.getDefault().register(this)
@@ -23,6 +24,8 @@ class ActiveOrdersViewModel: BaseViewModel() {
     fun onWSConnected(event: WSConnectedEvent) {
         subscribeForNewOrder()
         subscribeForOrderComplete()
+        subscribeForCanceledOrder()
+        OrderRepository.shared.subscribeDriverArrivedFlow()
     }
 
     fun getActiveOrders() {
@@ -41,6 +44,13 @@ class ActiveOrdersViewModel: BaseViewModel() {
 
     private fun subscribeForOrderComplete() {
         OrderRepository.shared.getOrderCompletedFlow().onEach {
+            activeOrders.value = OrderRepository.shared.activeOrders
+        }.launchIn(viewModelScope)
+    }
+
+    private fun subscribeForCanceledOrder() {
+        OrderRepository.shared.getOrderCanceledFlow().onEach {
+            message.value = "Đơn hàng số ${it.id} đã bị huỷ. Lý do: ${it.reason}"
             activeOrders.value = OrderRepository.shared.activeOrders
         }.launchIn(viewModelScope)
     }
