@@ -43,8 +43,10 @@ class OrderRepository private constructor() {
     fun getNewOrderRequestFlow(): Flow<OrderInfo> {
         if (newOrderRequestFlow == null) {
             newOrderRequestFlow = stompMessageHub.subscribeTo(Endpoint.newOrderRequest, OrderInfo::class.java)
-                ?.onEach {
-                    activeOrders.add(it)
+                ?.onEach {newOrder ->
+                    if (!activeOrders.any { it.orderId == newOrder.orderId }) {
+                        activeOrders.add(newOrder)
+                    }
                 }
         }
 

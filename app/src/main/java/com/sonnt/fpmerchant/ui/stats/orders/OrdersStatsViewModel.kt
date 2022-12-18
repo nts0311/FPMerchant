@@ -28,7 +28,7 @@ class RevenueStatsViewModel: BaseViewModel() {
         }
 
         viewModelScope.launch {
-            val response = callApi { NetworkModule.statsService.getOrderStat(fromDate.toString(), toDate.toString()) }
+            val response = callApi { NetworkModule.statsService.getOrderStat(fromDate.toString(), toDate.plusDays(1).toString()) }
 
             when (response) {
                 is ApiResult.Success -> {
@@ -55,6 +55,10 @@ class RevenueStatsViewModel: BaseViewModel() {
             numOfOrderByDays.add(dayStat)
             date = date.plusDays(1)
         }
+
+        val end = response.numOfOrderByDay.firstOrNull{it.date == toDate.toString()} ?: NumOfOrderByDayStat(date.toString(), 0)
+        numOfOrderByDays.add(end)
+
         val revenueEntries = List(numOfOrderByDays.size) { i -> Entry(i.toFloat(), numOfOrderByDays[i].numOfOrder.toFloat()) }
 
         orderByDayChartData.value = numOfOrderByDays.mapIndexed { index, statEntry ->

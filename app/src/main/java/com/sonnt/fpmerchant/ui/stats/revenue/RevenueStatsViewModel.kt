@@ -8,6 +8,7 @@ import com.sonnt.fpmerchant.network.ApiResult
 import com.sonnt.fpmerchant.network.NetworkModule
 import com.sonnt.fpmerchant.network.callApi
 import com.sonnt.fpmerchant.network.dto.response.DayRevenueStat
+import com.sonnt.fpmerchant.network.dto.response.NumOfOrderByDayStat
 import com.sonnt.fpmerchant.network.dto.response.ProductRevenueStat
 import com.sonnt.fpmerchant.network.dto.response.RevenueStatsResponse
 import com.sonnt.fpmerchant.ui.base.BaseViewModel
@@ -41,7 +42,7 @@ class RevenueStatsViewModel: BaseViewModel() {
         }
 
         viewModelScope.launch {
-            val response = callApi { NetworkModule.statsService.getRevenueStat(fromDate.toString(), toDate.toString()) }
+            val response = callApi { NetworkModule.statsService.getRevenueStat(fromDate.toString(), toDate.plusDays(1).toString()) }
 
             when (response) {
                 is ApiResult.Success -> {
@@ -68,6 +69,9 @@ class RevenueStatsViewModel: BaseViewModel() {
             revenueByDays.add(dayStat)
             date = date.plusDays(1)
         }
+        val end = response.revenueByDay.firstOrNull{it.date == toDate.toString()} ?: DayRevenueStat(date.toString(), 0.0)
+        revenueByDays.add(end)
+
         val revenueEntries = List(revenueByDays.size) { i -> Entry(i.toFloat(), revenueByDays[i].revenue.toFloat(), revenueByDays[i]) }
 
         totalRevenue.value = response.revenueByDay.fold(0.0) {acc, stat -> acc + stat.revenue}.formatCurrency()

@@ -3,8 +3,10 @@ package com.sonnt.fpmerchant.ui.stats.revenue
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.Legend
@@ -19,6 +21,7 @@ import com.sonnt.fpmerchant.network.dto.response.ProductRevenueStat
 import com.sonnt.fpmerchant.ui.base.BaseFragment
 import com.sonnt.fpmerchant.ui.base.BaseRecyclerViewAdapter
 import com.sonnt.fpmerchant.ui.selectdateview.MyMarkerView
+import com.sonnt.fpmerchant.ui.selectdateview.SelectDateView
 
 class RevenueStatsFragment : BaseFragment<FragmentRevenueStatsBinding>() {
     override var layoutResId: Int = R.layout.fragment_revenue_stats

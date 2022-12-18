@@ -3,6 +3,7 @@ package com.sonnt.fpmerchant.ui.stats.orders
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import androidx.fragment.app.viewModels
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
@@ -12,6 +13,7 @@ import com.sonnt.fpmerchant.R
 import com.sonnt.fpmerchant.databinding.FragmentOrdersStatsBinding
 import com.sonnt.fpmerchant.ui.base.BaseFragment
 import com.sonnt.fpmerchant.ui.selectdateview.MyMarkerView
+import com.sonnt.fpmerchant.ui.selectdateview.SelectDateView
 import com.sonnt.fpmerchant.ui.stats.revenue.LineStatEntry
 
 class OrdersStatsFragment : BaseFragment<FragmentOrdersStatsBinding>() {

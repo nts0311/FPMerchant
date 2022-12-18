@@ -1,6 +1,7 @@
 package com.sonnt.fpmerchant
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.widget.ImageView
 import android.widget.TextView
@@ -13,8 +14,14 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import com.sonnt.fpmerchant.data.local.AuthDataSource
 import com.sonnt.fpmerchant.databinding.ActivityMainBinding
+import com.sonnt.fpmerchant.network.NetworkModule
+import com.sonnt.fpmerchant.network.dto.request.UpdateFcmTokenRequest
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,7 +33,7 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        updateFcmToken()
         setSupportActionBar(binding.appBarMain.toolbar)
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
@@ -44,7 +51,21 @@ class MainActivity : AppCompatActivity() {
         setMerchantInfo()
     }
 
+    private fun updateFcmToken() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                return@OnCompleteListener
+            }
 
+            // Get new FCM registration token
+            val token = task.result
+            Log.d("FCM", token)
+
+            GlobalScope.launch {
+                NetworkModule.authService.updateFcmToken(UpdateFcmTokenRequest(fcmToken = token))
+            }
+        })
+    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
