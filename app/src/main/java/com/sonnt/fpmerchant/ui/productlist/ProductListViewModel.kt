@@ -19,4 +19,8 @@ class ProductListViewModel: BaseViewModel() {
         }
     }
 
+    fun deleteProduct(product: Product) {
+
+    }
+
 }

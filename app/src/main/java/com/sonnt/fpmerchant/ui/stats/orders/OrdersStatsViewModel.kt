@@ -21,7 +21,7 @@ class RevenueStatsViewModel: BaseViewModel() {
     val averageNumOfOrderByHourChartData = MutableLiveData<List<LineStatEntry>>()
     val totalOrder = MutableLiveData<Int>()
 
-    fun getRevenueStats(fromDate: LocalDate, toDate: LocalDate) {
+    fun getOrderStats(fromDate: LocalDate, toDate: LocalDate) {
 
         if(fromDate == toDate) {
             return

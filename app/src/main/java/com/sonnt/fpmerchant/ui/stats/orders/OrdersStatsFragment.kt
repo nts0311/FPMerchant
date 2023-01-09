@@ -3,7 +3,6 @@ package com.sonnt.fpmerchant.ui.stats.orders
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import android.widget.TextView
 import androidx.fragment.app.viewModels
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
@@ -13,7 +12,6 @@ import com.sonnt.fpmerchant.R
 import com.sonnt.fpmerchant.databinding.FragmentOrdersStatsBinding
 import com.sonnt.fpmerchant.ui.base.BaseFragment
 import com.sonnt.fpmerchant.ui.selectdateview.MyMarkerView
-import com.sonnt.fpmerchant.ui.selectdateview.SelectDateView
 import com.sonnt.fpmerchant.ui.stats.revenue.LineStatEntry
 
 class OrdersStatsFragment : BaseFragment<FragmentOrdersStatsBinding>() {
@@ -29,7 +27,7 @@ class OrdersStatsFragment : BaseFragment<FragmentOrdersStatsBinding>() {
 
     private fun setupViews() {
         binding.selectDateView.newDateSelected = {fromDate, toDate ->
-            viewModel.getRevenueStats(fromDate, toDate)
+            viewModel.getOrderStats(fromDate, toDate)
         }
 
         setupChart(binding.numOfOrderByDayChart)
@@ -42,11 +40,11 @@ class OrdersStatsFragment : BaseFragment<FragmentOrdersStatsBinding>() {
        }
 
         viewModel.orderByDayChartData.observe(viewLifecycleOwner) {
-            drawRevenueByDayChart(binding.numOfOrderByDayChart, it)
+            drawChart(binding.numOfOrderByDayChart, it)
         }
 
         viewModel.averageNumOfOrderByHourChartData.observe(viewLifecycleOwner) {
-            drawRevenueByDayChart(binding.averageNumOfOrderByHourChart, it)
+            drawChart(binding.averageNumOfOrderByHourChart, it)
         }
     }
 
@@ -73,7 +71,7 @@ class OrdersStatsFragment : BaseFragment<FragmentOrdersStatsBinding>() {
         }
     }
 
-    private fun drawRevenueByDayChart(chart: LineChart, data: List<LineStatEntry>) {
+    private fun drawChart(chart: LineChart, data: List<LineStatEntry>) {
         chart.xAxis.apply {
             valueFormatter = object : ValueFormatter() {
                 override fun getFormattedValue(value: Float): String {

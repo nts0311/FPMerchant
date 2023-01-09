@@ -62,8 +62,12 @@ class OrderRepository private constructor() {
                     return@map activeOrders.first { it.orderId == orderId }
                 }
                 ?.onEach {order ->
-                    doneOrder.add(order)
+
                     activeOrders.removeAll { it.orderId == order.orderId }
+
+                    if (!doneOrder.any { it.orderId == order.orderId }) {
+                        doneOrder.add(order)
+                    }
                 }
                 ?.shareIn(coroutineScope, SharingStarted.Eagerly, 0)
         }
@@ -120,7 +124,7 @@ class OrderRepository private constructor() {
             is ApiResult.Success -> {
                 val doneOrder = response.data?.doneOrders ?: listOf()
                 this.doneOrder.clear()
-                this.doneOrder.addAll(activeOrders)
+                this.doneOrder.addAll(doneOrder)
                 doneOrder
             }
 

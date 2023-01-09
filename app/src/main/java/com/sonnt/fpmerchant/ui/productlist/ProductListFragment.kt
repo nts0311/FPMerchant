@@ -93,7 +93,8 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
     }
 
     private fun addProduct() {
-        findNavController().navigate(R.id.productDetailFragment)
+        val bundle = bundleOf( "menuId" to menuId )
+        findNavController().navigate(R.id.productDetailFragment, bundle)
     }
 
     private fun createItemPopupMenu(view: View, product: Product) {
@@ -103,6 +104,8 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
         popup.setOnMenuItemClickListener {
             if (it.itemId == R.id.item_edit_product_menu) {
                 toProductDetailScreen(product)
+            } else if (it.itemId == R.id.item_delete_item) {
+                deleteProduct(product)
             }
 
             return@setOnMenuItemClickListener true
@@ -113,6 +116,10 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding>() {
     fun toProductDetailScreen(product: Product) {
         val bundle = bundleOf("product" to product, "menuId" to menuId )
         findNavController().navigate(R.id.productDetailFragment, bundle)
+    }
+
+    fun deleteProduct(product: Product) {
+        viewModel.deleteProduct(product)
     }
 
     companion object {
